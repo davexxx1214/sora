@@ -82,12 +82,12 @@ class sunoplayer(Plugin):
 
     def call_sora_service(self, prompt, e_context):
         input =  {
-            "prompt": {prompt},
+            "prompt": prompt,
             "n_prompt":  "worst quality, low quality, nsfw, logo",
             "width":  512,
             "height":  512,
             "seed":  "-1",
-            "dreambooth":  "RealisticVisionV60B1_v51VAE.safetensors"
+            "dreambooth":  self.dreambooth
             }
 
         output = replicate.run(
