@@ -9,9 +9,7 @@ from common.log import logger
 import replicate
 
 import os
-import uuid
-import os
-import uuid
+
 from glob import glob
 import translators as ts
 
