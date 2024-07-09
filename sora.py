@@ -77,7 +77,7 @@ class sunoplayer(Plugin):
                         e_context["reply"] = reply
                         e_context.action = EventAction.BREAK_PASS
                 else:
-                    tip = f"💡欢迎使用MagicTime，指令格式为:\n\n{self.sora_prefix}+空格+提示词\n例如:\n{self.sora_prefix} Bean sprouts grow and mature from seeds"
+                    tip = f"💡欢迎使用kolors画图。指令格式为:\n\n{self.sora_prefix}+空格+提示词\n例如:\n{self.sora_prefix} 一个生日蛋糕上写着：生日快乐"
                     reply = Reply(type=ReplyType.TEXT, content= tip)
                     e_context["reply"] = reply
                     e_context.action = EventAction.BREAK_PASS    
