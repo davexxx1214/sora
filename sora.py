@@ -42,7 +42,7 @@ class sunoplayer(Plugin):
             # 从配置中提取所需的设置
             os.environ['REPLICATE_API_TOKEN'] = self.config.get("REPLICATE_API_TOKEN","")
             self.dreambooth = self.config.get("dreambooth","RealisticVisionV60B1_v51VAE.safetensors")
-            self.sora_prefix = self.config.get("sora_prefix", "时光机")
+            self.sora_prefix = self.config.get("sora_prefix", "ks")
 
             # 初始化成功日志
             logger.info("[sora] inited.")
@@ -63,7 +63,9 @@ class sunoplayer(Plugin):
                 if match: ##   匹配上了sora的指令
                     logger.info("calling sora service")
                     prompt = content[len(self.sora_prefix):].strip()
-                    sora_prompt = self.translate_to_english(prompt)
+                    # sora_prompt = self.translate_to_english(prompt)
+                    sora_prompt = prompt
+
                     logger.info(f"sora prompt = : {sora_prompt}")
                     try:
                         self.call_sora_service(sora_prompt, e_context)
@@ -81,24 +83,22 @@ class sunoplayer(Plugin):
                     e_context.action = EventAction.BREAK_PASS    
 
     def call_sora_service(self, prompt, e_context):
-        input =  {
+        input={
+            "steps": 50,
+            "width": 1024,
+            "height": 1024,
             "prompt": prompt,
-            "n_prompt":  "worst quality, low quality, nsfw, logo",
-            "width":  512,
-            "height":  512,
-            "seed":  "-1",
-            "dreambooth":  self.dreambooth
-            }
+            "num_images": 1
+        }
 
         output = replicate.run(
-            "camenduru/magictime:91e4bb80b45832b5bafdbc10d94fd1d364d0d6ad80f5b1498fcb25d217cb3a9c",
+            "charlesmccarthy/kolors:615e26703c22cfb36d2f29a6c81ef966edca3b90774c07a90e6d785eef2124cd",
             input=input
         )
 
-        # tip = '您的作曲之旅已经启航，让我们的音乐小精灵带上您的歌词飞向创意的宇宙！请耐心等待2~5分钟，您的个人音乐风暴就会随着节拍轻轻降落。准备好一起摇摆吧！🚀'
-        # self.send_reply(tip, e_context)
-        if "mp4" in output:
-            rt = ReplyType.VIDEO_URL
+
+        if "png" in output:
+            rt = ReplyType.IMAGE_URL
             rc = output
             reply = Reply(rt, rc)
             e_context["reply"] = reply
